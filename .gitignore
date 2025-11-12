@@ -1,0 +1,31 @@
+
+---
+
+## ⚙️ `.gitignore`
+
+```gitignore
+# Entorno
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entornos virtuales
+.venv/
+env/
+venv/
+
+# Archivos temporales
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# Modelos y datos
+app/ml/models/
+app/ml/pipelines/
+*.pkl
+*.onnx
+*.csv
+*.json
