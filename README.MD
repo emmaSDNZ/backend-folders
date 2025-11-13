@@ -1,140 +1,192 @@
-# 🧠 Backend Base Template — Modo Estudiante IA
+# 🏗️ Backend Modular - Arquitectura Base (FastAPI + IA + Data)
 
-Plantilla base para iniciar proyectos backend en **Python + FastAPI**, pensada para desarrollos modulares, escalables y listos para integrar **IA / Machine Learning**.
+## 📌 Descripción General
+Este proyecto define una **arquitectura backend modular y escalable** basada en **FastAPI**, orientada a sistemas que integran:
+- APIs REST,
+- módulos funcionales independientes,
+- inteligencia artificial (NLP, ML),
+- automatización (cron jobs, mensajería).
+
+El objetivo es proveer una **estructura limpia y mantenible** para proyectos de IA aplicados (por ejemplo, gestión médica, sistemas de atención, automatización inteligente, etc.).
 
 ---
 
-## 🏗️ Estructura del proyecto
+## 🚀 Instalación y Configuración Inicial
+
+### 1️⃣ Crear la estructura automáticamente
+Este repositorio incluye un script generador que crea todas las carpetas y archivos base del backend.
+
+Ejecutá:
 
 ```bash
+python generate_backend_structure.py
+Esto creará la carpeta:
+
+Copiar código
+backend/
+con toda la estructura modular lista (archivos .py, __init__.py, carpetas de módulos, etc.).
+
+🧩 Estructura de Carpetas
+bash
+Copiar código
 backend/
 │
 ├── app/
-│   ├── api/              # Rutas (endpoints)
-│   ├── core/             # Configuración global (seguridad, logs, variables)
-│   ├── db/               # Conexión y migraciones de base de datos
-│   ├── models/           # Modelos de datos (ORM o Pydantic)
-│   ├── schemas/          # Validación de entrada/salida de datos
-│   ├── services/         # Lógica de negocio, controladores
-│   ├── ml/               # Módulo opcional de Machine Learning / IA
-│   ├── utils/            # Funciones auxiliares reutilizables
-│   └── main.py           # Punto de entrada principal (FastAPI app)
+│   ├── main.py                      # Punto de entrada del backend FastAPI
+│   │
+│   ├── core/                        # Configuración, seguridad, logs
+│   │   ├── config.py                # Variables globales, .env, settings
+│   │   ├── security.py              # Autenticación / autorización
+│   │   ├── logger.py                # Logging y monitoreo del sistema
+│   │   └── __init__.py
+│   │
+│   ├── shared/                      # Recursos compartidos
+│   │   ├── db/                      # Conexión y setup de base de datos
+│   │   │   ├── session.py
+│   │   │   ├── init_db.py
+│   │   │   └── __init__.py
+│   │   ├── utils/                   # Funciones utilitarias
+│   │   │   ├── validators.py
+│   │   │   ├── formatters.py
+│   │   │   └── __init__.py
+│   │   ├── ai/                      # Modelos y pipelines de IA
+│   │   │   ├── predictor.py
+│   │   │   ├── retraining_pipeline.py
+│   │   │   └── __init__.py
+│   │   ├── messaging/               # Integraciones externas (WhatsApp, email)
+│   │   │   ├── whatsapp_client.py
+│   │   │   ├── email_client.py
+│   │   │   └── __init__.py
+│   │   ├── cron/                    # Tareas programadas
+│   │   │   ├── scheduler.py
+│   │   │   └── __init__.py
+│   │   └── __init__.py
+│   │
+│   ├── modules/                     # Módulos funcionales independientes
+│   │   ├── patients/                # Gestión de Pacientes
+│   │   │   ├── api/patients_routes.py
+│   │   │   ├── controllers/patients_controller.py
+│   │   │   ├── services/patients_service.py
+│   │   │   ├── models/patient_model.py
+│   │   │   ├── schemas/patient_schema.py
+│   │   │   └── __init__.py
+│   │   │
+│   │   ├── appointments/            # Gestión de Turnos
+│   │   │   ├── api/appointments_routes.py
+│   │   │   ├── controllers/appointments_controller.py
+│   │   │   ├── services/appointments_service.py
+│   │   │   ├── models/appointment_model.py
+│   │   │   ├── schemas/appointment_schema.py
+│   │   │   └── __init__.py
+│   │   │
+│   │   ├── results/                 # Resultados de Estudios
+│   │   │   ├── api/results_routes.py
+│   │   │   ├── services/results_service.py
+│   │   │   ├── models/result_model.py
+│   │   │   └── __init__.py
+│   │   │
+│   │   ├── faqs/                    # FAQs + NLP semántico
+│   │   │   ├── api/faqs_routes.py
+│   │   │   ├── services/faqs_service.py
+│   │   │   └── __init__.py
+│   │   │
+│   │   ├── human_derivation/        # Derivación a humano
+│   │   │   ├── api/human_routes.py
+│   │   │   ├── services/human_service.py
+│   │   │   └── __init__.py
+│   │   │
+│   │   ├── reminders/               # Recordatorios automáticos
+│   │   │   ├── api/reminders_routes.py
+│   │   │   ├── services/reminders_service.py
+│   │   │   ├── cron_jobs/reminders_cron.py
+│   │   │   └── __init__.py
+│   │   │
+│   │   └── analytics_ai/            # Capa analítica / IA
+│   │       ├── api/ai_routes.py
+│   │       ├── services/training_service.py
+│   │       ├── services/prediction_service.py
+│   │       ├── models/feedback_model.py
+│   │       ├── data/feedback_logs.csv
+│   │       └── __init__.py
+│   │
+│   └── __init__.py
 │
-├── tests/                # Pruebas unitarias e integración
+├── tests/                           # Tests unitarios por módulo
+│   ├── test_patients.py
+│   ├── test_appointments.py
+│   └── __init__.py
 │
-├── .env                  # Variables de entorno (NO subir a Git)
-├── .gitignore            # Archivos a excluir del control de versiones
-├── requirements.txt      # Dependencias del proyecto
-└── README.md
+├── .env                             # Variables de entorno
+├── requirements.txt                 # Dependencias del proyecto
+├── Dockerfile                       # Imagen Docker base
+├── docker-compose.yml               # Orquestación local
+└── README.md                        # Documentación general
+🧠 Descripción de Carpetas Principales
+Carpeta	Rol	Ejemplo
+core/	Configuración global y seguridad	JWT, CORS, logger, etc.
+shared/	Componentes comunes a todos los módulos	DB, IA, utils, cron, mensajería
+modules/	Módulos funcionales (cada uno es independiente)	Pacientes, Turnos, Resultados
+tests/	Tests unitarios por módulo	pytest
+.env	Variables de entorno (DB_URL, API_KEY, etc.)	Seguridad y configuración
+requirements.txt	Dependencias del proyecto	FastAPI, SQLAlchemy, etc.
 
+🧩 Ejecución del Backend
+Una vez generada la estructura:
 
-🧩 Explicación conceptual (modo estudiante IA)
-Carpeta	Rol	Analogía práctica
-api/	Define qué se puede pedir y qué se responde.	Es como la “ventanilla” del sistema.
-models/	Representa las tablas o estructuras de datos.	Son los moldes de cómo se guarda la información.
-schemas/	Define cómo deben entrar o salir los datos.	Como los formularios que validan lo que el usuario manda.
-services/	Contiene la lógica de negocio o inteligencia.	Es donde el sistema “piensa” qué hacer.
-core/	Configura la infraestructura base.	Como el tablero eléctrico de una casa.
-db/	Maneja la conexión con la base de datos.	Es el “enchufe” hacia el almacenamiento.
-utils/	Reúne funciones reutilizables.	Son las “herramientas” de tu caja de desarrollo.
-tests/	Verifica que todo funcione correctamente.	Es el control de calidad del sistema.
-ml/	Procesa modelos de Machine Learning / LLMs / inferencias.	Es el “cerebro” del sistema: donde vive la IA.
-
-🤖 Carpeta ml/ — Inteligencia Artificial
-Esta carpeta es opcional, y se recomienda cuando tu backend usa modelos de IA o ML.
-Ejemplo de estructura:
+Entrá al entorno del backend:
 
 bash
 Copiar código
-ml/
-├── __init__.py
-├── models/             # Modelos entrenados o serializados (.pkl, .onnx)
-├── pipelines/          # Pipelines de preprocesamiento y predicción
-├── llm_processors/     # Integraciones con LLMs o APIs (OpenAI, Ollama, etc.)
-└── predictor.py         # Funciones para cargar y ejecutar el modelo
-⚙️ .gitignore sugerido
-gitignore
-Copiar código
-# Entorno
-.env
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-
-# Entornos virtuales
-.venv/
-env/
-venv/
-
-# Archivos temporales
-.DS_Store
-.idea/
-.vscode/
-*.log
-
-# Modelos y datos
-app/ml/models/
-app/ml/pipelines/
-*.pkl
-*.onnx
-*.csv
-*.json
-🚀 Cómo usar esta plantilla
-Cloná este repositorio base
+cd backend
+Instalá las dependencias:
 
 bash
 Copiar código
-git clone https://github.com/tuusuario/backend-template.git
-cd backend-template
-Creá tu entorno virtual
-
-bash
-Copiar código
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate     # Windows
-Instalá dependencias
-
-bash
-Copiar código
-pip install -r requirements.txt
-Iniciá el servidor FastAPI
+pip install fastapi uvicorn[standard]
+Ejecutá el servidor:
 
 bash
 Copiar código
 uvicorn app.main:app --reload
-🧱 Filosofía
-Este template sigue el principio de "Clean Architecture":
+Abrí en el navegador:
 
-Cada capa del sistema tiene una responsabilidad única.
-El código debe ser modular, reutilizable y fácil de escalar.
-
-🧠 Ideal para proyectos como:
-APIs con FastAPI o Flask
-
-Integraciones IA (predicción, NLP, visión, etc.)
-
-Sistemas inteligentes (IoT, automatización, data-driven apps)
-
-Microservicios conectados a modelos de ML o LLMs
-
-✍️ Creado para aprender, experimentar y escalar proyectos inteligentes.
-
-⚙️ requirements.txt (mínimo para FastAPI)
-txt
+cpp
 Copiar código
-fastapi
-uvicorn
-pydantic
-python-dotenv
-🚀 main.py (backend/app/main.py)
-python
+http://127.0.0.1:8000
+Y la documentación interactiva:
+
+arduino
 Copiar código
-from fastapi import FastAPI
+http://127.0.0.1:8000/docs
+🧱 Buenas Prácticas
+✅ Cada módulo debe tener:
 
-app = FastAPI(title="Backend Base Template", version="1.0.0")
+models/: definiciones de ORM o clases de datos
 
-@app.get("/")
-def root():
-    return {"message": "🚀 Backend Template running successfully!"}
+schemas/: validación con Pydantic
+
+services/: lógica de negocio
+
+controllers/: manejo de flujos complejos
+
+api/: rutas (endpoints FastAPI)
+
+✅ La IA o modelos ML deben ir en shared/ai/.
+✅ Los cron jobs o tareas automáticas en shared/cron/ o modules/<mod>/cron_jobs/.
+✅ No mezcles lógica entre módulos: cada uno debe poder testearse de forma aislada.
+
+✨ Autor
+Emanuel SudañeZ
+Estudiante de Ciencia de Datos e Ingeniería en Sistemas | Enfocado en IA Aplicada y Desarrollo Backend Modular.
+📍 Jujuy, Argentina
+
+🧠 Extras
+Podés extender este proyecto agregando:
+
+CI/CD (GitHub Actions)
+
+Base de datos (PostgreSQL + SQLAlchemy)
+
+Modelos de Machine Learning conectados a shared/ai/
+
+API Gateway o Microservicios futuros
